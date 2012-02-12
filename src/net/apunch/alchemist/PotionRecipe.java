@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -28,11 +29,47 @@ public class PotionRecipe {
     }
 
     public boolean hasIngredient(ItemStack ingredient) {
-        return ingredients.contains(ingredient);
+        for (ItemStack stack : ingredients) {
+            if (stack != null
+                    && stack.getTypeId() == ingredient.getTypeId()
+                    && stack.getDurability() == ingredient.getDurability()
+                    && ((/*
+                          * stack.getEnchantments() != null &&
+                          * ingredient.getEnchantments() != null &&
+                          */stack.getEnchantments().equals(ingredient.getEnchantments())) || (stack.getEnchantments() == null && ingredient
+                            .getEnchantments() == null)))
+                return true;
+        }
+        return false;
     }
 
-    public void removeIngredient(ItemStack ingredient) {
-        ingredients.remove(ingredient);
+    // Returns whether the player had enough of the item
+    public boolean removeIngredientFromHand(Player player) {
+        ItemStack ingredient = player.getItemInHand();
+        // Try to remove entire stack
+        if (ingredients.contains(ingredient)) {
+            System.out.println("full stack had");
+            ingredients.remove(ingredient);
+            player.setItemInHand(null);
+            return true;
+        }
+        for (ItemStack stack : ingredients) {
+            if (stack != null && stack.getTypeId() == ingredient.getTypeId()
+                    && stack.getDurability() == ingredient.getDurability()
+                    && stack.getEnchantments().equals(ingredient.getEnchantments())) {
+                System.out.println("stack data == ingredient data: " + stack);
+                if (stack.getAmount() - ingredient.getAmount() > 0) {
+                    stack.setAmount(stack.getAmount() - ingredient.getAmount());
+                    return true;
+                }
+                System.out.println("had enough and more!");
+                ingredients.remove(stack);
+                ingredient.setAmount(ingredient.getAmount() - stack.getAmount());
+                player.setItemInHand(ingredient);
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean isComplete() {

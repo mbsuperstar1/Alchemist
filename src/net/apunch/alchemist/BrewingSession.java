@@ -28,8 +28,10 @@ public class BrewingSession {
     public boolean handleClick() {
         if (recipe.hasIngredient(player.getItemInHand())) {
             // TODO add fake item entities around NPC for each ingredient added?
-            recipe.removeIngredient(player.getItemInHand());
-            player.setItemInHand(null);
+            if (!recipe.removeIngredientFromHand(player)) {
+                npc.chat(ChatColor.YELLOW + "I will need more of that item!");
+                return false;
+            }
             if (recipe.isComplete()) {
                 applyResult();
                 npc.chat(ChatColor.GREEN + "I have combined the ingredients to concoct a potion of " + ChatColor.GOLD
