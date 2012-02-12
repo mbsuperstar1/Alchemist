@@ -17,6 +17,8 @@ public class AlchemistCharacter extends Character {
     @Override
     public void load(DataKey key) throws NPCLoadException {
         recipeName = key.getString("recipe");
+        if (Alchemist.getRecipe(recipeName) == null)
+            throw new NPCLoadException("No recipe with the name '" + recipeName + "' exists.");
     }
 
     @Override

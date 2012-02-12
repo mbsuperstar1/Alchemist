@@ -5,6 +5,8 @@ import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.Potion;
+import org.bukkit.potion.PotionType;
 
 public class BrewingSession {
     private final Player player;
@@ -19,18 +21,18 @@ public class BrewingSession {
 
     public void initialize() {
         npc.chat(ChatColor.YELLOW + "Hello there, " + player.getName()
-                + ". Give me what I need and I will enchant you like you've never experienced before.");
+                + ". Give me what I need and I will brew you a potion!");
     }
 
     // Return whether the session should end
     public boolean handleClick() {
         if (recipe.hasIngredient(player.getItemInHand())) {
-            // TODO add fake item entities around NPC?
+            // TODO add fake item entities around NPC for each ingredient added?
             recipe.removeIngredient(player.getItemInHand());
             player.setItemInHand(null);
             if (recipe.isComplete()) {
                 applyResult();
-                npc.chat(ChatColor.GREEN + "I have combined the ingredients to enchant you with " + ChatColor.GOLD
+                npc.chat(ChatColor.GREEN + "I have combined the ingredients to concoct a potion of " + ChatColor.GOLD
                         + getEffectName().replace('-', ' ') + ChatColor.GREEN + ".");
                 return true;
             }
@@ -50,6 +52,7 @@ public class BrewingSession {
 
     private void applyResult() {
         player.playEffect(player.getLocation(), Effect.POTION_BREAK, 0);
-        player.addPotionEffect(recipe.getResult());
+        player.getWorld().dropItemNaturally(npc.getBukkitEntity().getLocation(),
+                new Potion(PotionType.getByEffect(recipe.getResult().getType())).toItemStack(1));
     }
 }
