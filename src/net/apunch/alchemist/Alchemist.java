@@ -24,7 +24,7 @@ public class Alchemist extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        getLogger().log(Level.INFO, "Disabled.");
+        getLogger().log(Level.INFO, " v" + getDescription().getVersion() + " disabled.");
     }
 
     @Override
@@ -38,7 +38,7 @@ public class Alchemist extends JavaPlugin {
             getLogger().log(Level.SEVERE, "Issue enabling plugin: " + ex.getMessage());
         }
 
-        getLogger().log(Level.INFO, "Enabled.");
+        getLogger().log(Level.INFO, " v" + getDescription().getVersion() + " enabled.");
     }
 
     public static PotionRecipe getRecipe(String name) {

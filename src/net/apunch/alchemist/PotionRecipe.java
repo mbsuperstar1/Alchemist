@@ -33,7 +33,6 @@ public class PotionRecipe {
 
     public void removeIngredient(ItemStack ingredient) {
         ingredients.remove(ingredient);
-        System.out.println("ingredients: " + ingredients.size());
     }
 
     public boolean isComplete() {

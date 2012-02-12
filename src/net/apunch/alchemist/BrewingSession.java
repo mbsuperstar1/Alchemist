@@ -4,10 +4,7 @@ import net.citizensnpcs.api.npc.NPC;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
 public class BrewingSession {
     private final Player player;
@@ -21,8 +18,6 @@ public class BrewingSession {
     }
 
     public void initialize() {
-        ((LivingEntity) npc.getBukkitEntity()).addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 100,
-                1));
         npc.chat(ChatColor.YELLOW + "Hello there, " + player.getName()
                 + ". Give me what I need and I will enchant you like you've never experienced before.");
     }
