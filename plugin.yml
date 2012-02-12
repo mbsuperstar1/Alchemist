@@ -1,0 +1,4 @@
+name: Alchemist
+authors: [aPunch]
+version: 1.0
+main: net.apunch.alchemist.Alchemist
